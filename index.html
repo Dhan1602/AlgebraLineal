@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Cramer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body onload="alCargar()">
+    <div id="body">
+        <div id="ladoIzquierdo">
+            <div id="elegirSistema">
+                <span><label id="Sistema">Sistema a realizar</label>
+                    <button class="elegido" value="2">2x2</button>
+                    <button value="3">3x3</button>
+                </span>
+            </div>
+            <div id="formEcuaciones">
+            </div>
+        </div>
+        <div id="ladoDerecho">
+            <div id="contenedorDeltas">
+                <span id="Delta" class="Deltas">&#9651; = </span>
+                <span id="DeltaX" class="Deltas">x = </span>
+                <span id="DeltaY" class="Deltas">y = </span>
+            </div>
+
+        </div>
+        <script src="script/script.js"></script>
+    </div>
+    <footer>
+        <ul>
+            <li>Daniel Velasquez</li>
+            <li>Juan Gaviria</li>
+            <li>David Hernandez</li>
+        </ul>
+    </footer>
+</body>
+
+</html>
