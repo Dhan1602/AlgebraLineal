@@ -206,6 +206,6 @@ ul{
         width: 80%;
     }
     ul{
-        padding: none;
+        padding: 0;
     }
 }

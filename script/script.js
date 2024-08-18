@@ -136,27 +136,7 @@ function calcularResultados() {
             let valorX = (deltaX / delta);
             let valorY = 0;
 
-            //Imprimir en pantalla
-
-            document.querySelector("#Delta").innerHTML = "&#9651; = " + delta;
-            document.querySelector("#DeltaX").innerHTML = "&#9651;x = " + deltaX;
-            document.querySelector("#DeltaY").innerHTML = "&#9651;y = " + deltaY;
-            document.querySelector("#ValorX").innerHTML = "x = " + valorX;
-            document.querySelector("#ValorY").innerHTML = "y = " + valorY;
-
-            // Validaciones
-
-            if (delta == 0) {
-
-                if (deltaX == 0 && deltaY == 0) {
-                    document.querySelector("#Nota").innerHTML = "<b>El sistema es consistente y tiene infinitas soluciones</b>";
-                } else if (deltaX != 0 || deltaY != 0) {
-                    document.querySelector("#Nota").innerHTML = "<b>El sistema es inconsistente y no tiene solución</b>";
-                }
-
-            } else {
-                document.querySelector("#Nota").innerHTML = "<b>El sistema es consistente y tiene una única solución</b>";
-            }
+            mostrarResultados(delta, deltaX, deltaY, valorX, valorY);
 
         } else if (sistemaDeEcuaciones == 3) { // Si el sistema es 3x3
 
@@ -177,29 +157,7 @@ function calcularResultados() {
 
             let valorZ = 0;
 
-            //Imprimir en pantalla
-
-            document.querySelector("#Delta").innerHTML = "&#9651; = " + delta;
-            document.querySelector("#DeltaX").innerHTML = "&#9651;x = " + deltaX;
-            document.querySelector("#DeltaY").innerHTML = "&#9651;y = " + deltaY;
-            document.querySelector("#DeltaZ").innerHTML = "&#9651;z = " + deltaZ;
-            document.querySelector("#ValorX").innerHTML = "x = " + valorX;
-            document.querySelector("#ValorY").innerHTML = "y = " + valorY;
-            document.querySelector("#ValorZ").innerHTML = "z = " + valorZ;
-
-            // Validaciones
-
-            if (delta == 0) {
-
-                if (deltaX == 0 && deltaY == 0) {
-                    document.querySelector("#Nota").innerHTML = "<b>El sistema es consistente y tiene infinitas soluciones</b>";
-                } else if (deltaX != 0 || deltaY != 0) {
-                    document.querySelector("#Nota").innerHTML = "<b>El sistema es inconsistente y no tiene solución</b>";
-                }
-
-            } else {
-                document.querySelector("#Nota").innerHTML = "<b>El sistema es consistente y tiene una única solución</b>";
-            }
+            mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
 
         };
     } else {
@@ -211,22 +169,43 @@ function generarMatriz(columna0, columna1, columna2) {
     return [
         [columna0[0], columna1[0], columna2[0]],
         [columna0[1], columna1[1], columna2[1]],
-        [columna0[2], columna1[2], columna2[2]],
-        [columna0[0], columna1[0], columna2[0]],
-        [columna0[1], columna1[1], columna2[1]]
+        [columna0[2], columna1[2], columna2[2]]
     ];
 }
 
 function multiplicarDiagonales(matriz) {
-    resultado1 = 0, resultado2 = 0;
+    let resultado1 = matriz[0][0] * matriz[1][1] * matriz[2][2] +
+                     matriz[1][0] * matriz[2][1] * matriz[0][2] +
+                     matriz[2][0] * matriz[0][1] * matriz[1][2];
 
-    for (let i = 0; i < 3; i++) { // De izquierda a derecha
-        resultado1 += (matriz[i][0] * matriz[i + 1][1] * matriz[i + 2][2])
+    let resultado2 = matriz[0][2] * matriz[1][1] * matriz[2][0] +
+                     matriz[1][2] * matriz[2][1] * matriz[0][0] +
+                     matriz[2][2] * matriz[0][1] * matriz[1][0];
+
+    return resultado1 - resultado2;
+}
+
+function mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ) {
+    document.querySelector("#Delta").innerHTML = `&#9651; = ${delta}`;
+    document.querySelector("#DeltaX").innerHTML = `&#9651;x = ${deltaX}`;
+    document.querySelector("#DeltaY").innerHTML = `&#9651;y = ${deltaY}`;
+    document.querySelector("#ValorX").innerHTML = `x = ${valorX}`;
+    document.querySelector("#ValorY").innerHTML = `y = ${valorY}`;
+    if (valorZ !== undefined) {
+        document.querySelector("#ValorZ").innerHTML = `z = ${valorZ}`;
+        document.querySelector("#DeltaZ").innerHTML = `&#9651;z = ${deltaZ}`;
     }
+    validarSoluciones(delta, deltaX, deltaY);
+}
 
-    for (let i = 0; i < 3; i++) { // De derecha a izquierda
-        resultado2 += (matriz[i][2] * matriz[i + 1][1] * matriz[i + 2][0])
+function validarSoluciones(delta, deltaX, deltaY) {
+    let mensaje = "<b>El sistema es consistente y tiene una única solución</b>";
+    if (delta === 0) {
+        if (deltaX === 0 && deltaY === 0) {
+            mensaje = "<b>El sistema es consistente y tiene infinitas soluciones</b>";
+        } else {
+            mensaje = "<b>El sistema es inconsistente y no tiene solución</b>";
+        }
     }
-
-    return resultado1 - resultado2
+    document.querySelector("#Nota").innerHTML = mensaje;
 }
