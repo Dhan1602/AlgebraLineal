@@ -11,7 +11,7 @@ botonesSistema.forEach(boton => {
     boton.addEventListener("click", () => {
         deseleccionarBotones();
         boton.classList.add("elegido");
-        sistemaDeEcuaciones = boton.value
+        sistemaDeEcuaciones = boton.value;
         crearEcuacionesHTML(sistemaDeEcuaciones);
     })
 })
@@ -64,42 +64,65 @@ function crearEcuacionesHTML(cantidad) {
 
 }
 
+function validarInputVacios(inputs){
+    var vacios = false;
+    inputs.forEach(inpt =>{
+        if(inpt.value.trim() == ""){
+            vacios = true;
+        }
+    })
+    return vacios;
+}
+
 
 // Código puro //
 
 function calcularResultados() {
     window.location = '#contenedorDeltas'; // La versión movil hace scroll a los resultados
 
+    
     //Obtener variables necesarias
     todosLosValores = document.querySelectorAll("input");
     let CoeficientesX = [];
     let CoeficientesY = [];
     let Independientes = [];
-
-    todosLosValores.forEach(elemento => {
-        if (elemento.classList.contains("x")) {
-            CoeficientesX.push(parseFloat(elemento.value));
-        } else if (elemento.classList.contains("y")) {
-            CoeficientesY.push(parseFloat(elemento.value));
-        } else {
-            Independientes.push(parseFloat(elemento.value));
-        }
-    });
-
-    //Calculos
-
-    let delta = (CoeficientesX[0] * CoeficientesY[1]) - (CoeficientesY[0] * CoeficientesX[1]);
-    let deltaX = 0
-    let deltaY = 0
-    let valorX = 0
-    let valorY = 0
     
+    var inputVacios = validarInputVacios(todosLosValores); // Validar que no haya ningun campo de texto vacio
+    
+    // Si no estan vacios los campos de texto
+    if(!inputVacios){
+        todosLosValores.forEach(elemento => {
+            if (elemento.classList.contains("x")) {
+                CoeficientesX.push(parseFloat(elemento.value));
+            } else if (elemento.classList.contains("y")) {
+                CoeficientesY.push(parseFloat(elemento.value));
+            } else {
+                Independientes.push(parseFloat(elemento.value));
+            }
+        });
 
-    if (sistemaDeEcuaciones == 2) { //Si el sistema es 2x2
-        document.querySelector("#Delta").innerHTML = "&#9651; = " + delta;
-        document.querySelector("#DeltaX").innerHTML = "&#9651;x = " + deltaX;
-        document.querySelector("#DeltaY").innerHTML = "&#9651;y = " + deltaY;
-        document.querySelector("#ValorX").innerHTML = "x = " + valorX;
-        document.querySelector("#ValorY").innerHTML = "y = " + valorY;
-    };
+        console.log("Coeficientes X: " + CoeficientesX);
+        console.log("Coeficientes Y: " + CoeficientesY);
+        console.log("independientes: " + Independientes);
+        
+    
+        //Calculos
+    
+        let delta = (CoeficientesX[0] * CoeficientesY[1]) - (CoeficientesY[0] * CoeficientesX[1]);
+        let deltaX = (Independientes[0] * CoeficientesY[1]) - (CoeficientesY[0] * Independientes[1]);
+        let deltaY = 0
+        let valorX = (deltaX / delta);
+        let valorY = 0
+        
+    
+        if (sistemaDeEcuaciones == 2) { //Si el sistema es 2x2
+            document.querySelector("#Delta").innerHTML = "&#9651; = " + delta;
+            document.querySelector("#DeltaX").innerHTML = "&#9651;x = " + deltaX;
+            document.querySelector("#DeltaY").innerHTML = "&#9651;y = " + deltaY;
+            document.querySelector("#ValorX").innerHTML = "x = " + valorX;
+            document.querySelector("#ValorY").innerHTML = "y = " + valorY;
+        };
+    } else{
+        alert("No debe dejar ningún campo vacío")
+    }
 };
