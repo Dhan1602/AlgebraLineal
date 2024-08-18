@@ -83,10 +83,14 @@ input::-webkit-inner-spin-button {
     padding: 15px;
     margin: 15px;
     border-radius: 6px;
-    width: 451px;
+    width: 440px;
     -webkit-box-shadow: 10px 13px 6px -7px rgba(0, 0, 0, 0.14);
     -moz-box-shadow: 10px 13px 6px -7px rgba(0, 0, 0, 0.14);
     box-shadow: 10px 13px 6px -7px rgba(0, 0, 0, 0.14);
+}
+
+.ecuacionTres{
+    width: 550px;
 }
 
 .ecuacion input {
@@ -166,6 +170,10 @@ ul{
     text-decoration: none;
     list-style-type: none;
     text-align: center;
+}
+
+.tres{
+    display: none;
 }
 
 /* Celulares */
