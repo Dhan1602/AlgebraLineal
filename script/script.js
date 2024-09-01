@@ -48,15 +48,16 @@ function crearEcuacionesHTML(cantidad) {
                 "<input type='number' class='inputEcuacion y '><span class='incognita'>y</span>" +
                 "<input type='number' class='inputEcuacion z '><span class='incognita'>z =</span>" +
                 "<input type='number' class='inputEcuacion independiente'>";
-        } else if (cantidad == 4) {
-            spanEcuacion.classList.add("ecuacionTres");
-            spanEcuacion.innerHTML = "Ecuación " + (i + 1) +
-                "<input type='number' class='inputEcuacion x'><span class='incognita'>x</span>" +
-                "<input type='number' class='inputEcuacion y '><span class='incognita'>y</span>" +
-                "<input type='number' class='inputEcuacion z '><span class='incognita'>z</span>" +
-                "<input type='number' class='inputEcuacion w '><span class='incognita'>w =</span>" +
-                "<input type='number' class='inputEcuacion independiente'>";
         }
+                // } else if (cantidad == 4) {
+        //     spanEcuacion.classList.add("ecuacionTres");
+        //     spanEcuacion.innerHTML = "Ecuación " + (i + 1) +
+        //         "<input type='number' class='inputEcuacion x'><span class='incognita'>x</span>" +
+        //         "<input type='number' class='inputEcuacion y '><span class='incognita'>y</span>" +
+        //         "<input type='number' class='inputEcuacion z '><span class='incognita'>z</span>" +
+        //         "<input type='number' class='inputEcuacion w '><span class='incognita'>w =</span>" +
+        //         "<input type='number' class='inputEcuacion independiente'>";
+        // }
         divEcuaciones.append(spanEcuacion);
     }
 
@@ -113,7 +114,7 @@ function calcularResultados() {
     let CoeficientesX = [];
     let CoeficientesY = [];
     let CoeficientesZ = [];
-    let CoeficientesW = [];
+    // let CoeficientesW = [];
     let Independientes = [];
 
     if (validarInputVacios(todosLosValores)) { // Validar que no haya ningun campo de texto vacio
@@ -151,6 +152,8 @@ function calcularResultados() {
  
         let deltaY = multiplicarDiagonales(CoeficientesX, Independientes, CoeficientesZ);
 
+        let deltaZ = 0;
+
         
 
         let valorX = deltaX / delta;
@@ -161,16 +164,17 @@ function calcularResultados() {
 
         mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
 
-    } else if( sistemaDeEcuaciones == 4){
+    // } else if( sistemaDeEcuaciones == 4){
         
-        let delta = matrizDisminuida(CoeficientesX, CoeficientesY, CoeficientesZ, CoeficientesW);
+    //     let delta = matrizDisminuida(CoeficientesX, CoeficientesY, CoeficientesZ, CoeficientesW);
 
-        let deltaX = multiplicarDiagonales(Independientes, CoeficientesY, CoeficientesZ);
+    //     let deltaX = multiplicarDiagonales(Independientes, CoeficientesY, CoeficientesZ);
  
-        let valorX = deltaX / delta;
+    //     let valorX = deltaX / delta;
 
 
-        mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
+    //     mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
+    // };
     };
 };
 
