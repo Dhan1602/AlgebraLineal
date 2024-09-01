@@ -48,6 +48,14 @@ function crearEcuacionesHTML(cantidad) {
                 "<input type='number' class='inputEcuacion y '><span class='incognita'>y</span>" +
                 "<input type='number' class='inputEcuacion z '><span class='incognita'>z =</span>" +
                 "<input type='number' class='inputEcuacion independiente'>";
+        } else if (cantidad == 4) {
+            spanEcuacion.classList.add("ecuacionTres");
+            spanEcuacion.innerHTML = "Ecuación " + (i + 1) +
+                "<input type='number' class='inputEcuacion x'><span class='incognita'>x</span>" +
+                "<input type='number' class='inputEcuacion y '><span class='incognita'>y</span>" +
+                "<input type='number' class='inputEcuacion z '><span class='incognita'>z</span>" +
+                "<input type='number' class='inputEcuacion w '><span class='incognita'>w =</span>" +
+                "<input type='number' class='inputEcuacion independiente'>";
         }
         divEcuaciones.append(spanEcuacion);
     }
@@ -100,69 +108,70 @@ function validarInputVacios(inputs) {
 function calcularResultados() {
     window.location = '#contenedorDeltas'; // La versión movil hace scroll a los resultados
 
-
     //Obtener variables necesarias
     todosLosValores = document.querySelectorAll("input");
     let CoeficientesX = [];
     let CoeficientesY = [];
     let CoeficientesZ = [];
+    let CoeficientesW = [];
     let Independientes = [];
 
-    var inputVacios = validarInputVacios(todosLosValores); // Validar que no haya ningun campo de texto vacio
-
-    // Si no estan vacios los campos de texto
-    if (!inputVacios) {
-        todosLosValores.forEach(elemento => {
-            if (elemento.classList.contains("x")) {
-                CoeficientesX.push(parseFloat(elemento.value));
-            } else if (elemento.classList.contains("y")) {
-                CoeficientesY.push(parseFloat(elemento.value));
-            } else if (elemento.classList.contains("z")) {
-                CoeficientesZ.push(parseFloat(elemento.value));
-            } else {
-                Independientes.push(parseFloat(elemento.value));
-            }
-        });
-
-
-
-        if (sistemaDeEcuaciones == 2) { //Si el sistema es 2x2
-
-            // Calculos 2x2
-
-            let delta = (CoeficientesX[0] * CoeficientesY[1]) - (CoeficientesY[0] * CoeficientesX[1]);
-            let deltaX = (Independientes[0] * CoeficientesY[1]) - (CoeficientesY[0] * Independientes[1]);
-            let deltaY = 0;
-            let valorX = (deltaX / delta);
-            let valorY = 0;
-
-            mostrarResultados(delta, deltaX, deltaY, valorX, valorY);
-
-        } else if (sistemaDeEcuaciones == 3) { // Si el sistema es 3x3
-
-            // Calculos 3x3
-            var matrizDeltas = generarMatriz(CoeficientesX, CoeficientesY, CoeficientesZ);
-            let delta = multiplicarDiagonales(matrizDeltas);
-
-            matrizDeltas = generarMatriz(Independientes, CoeficientesY, CoeficientesZ);
-            let deltaX = multiplicarDiagonales(matrizDeltas);
-
-            let deltaY = 0;
-
-            let deltaZ = 0;
-
-            let valorX = deltaX / delta;
-
-            let valorY = 0;
-
-            let valorZ = 0;
-
-            mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
-
-        };
-    } else {
-        alert("No debe dejar ningún campo vacío")
+    if (validarInputVacios(todosLosValores)) { // Validar que no haya ningun campo de texto vacio
+        alert("No debe dejar ningún campo vacío");
+        return;
     }
+
+    todosLosValores.forEach(elemento => { //Agregar cada valor a su variable correspondiente (coeficientes de x, y, z, independientes)
+        if (elemento.classList.contains("x")) CoeficientesX.push(parseFloat(elemento.value));
+        else if (elemento.classList.contains("y")) CoeficientesY.push(parseFloat(elemento.value));
+        else if (elemento.classList.contains("z")) CoeficientesZ.push(parseFloat(elemento.value));
+        else if (elemento.classList.contains("w")) CoeficientesZ.push(parseFloat(elemento.value));
+        else Independientes.push(parseFloat(elemento.value));
+    });
+
+    if (sistemaDeEcuaciones == 2) { //Si el sistema es 2x2
+
+        // Calculos 2x2
+
+        let delta = (CoeficientesX[0] * CoeficientesY[1]) - (CoeficientesY[0] * CoeficientesX[1]);
+        let deltaX = (Independientes[0] * CoeficientesY[1]) - (Independientes[1] * CoeficientesY[0]);
+        let deltaY = (CoeficientesX[0] * Independientes[1]) - (Independientes[0] * CoeficientesX[1]);
+        let valorX = deltaX / delta;
+        let valorY = (deltaY / delta);
+
+        mostrarResultados(delta, deltaX, deltaY, valorX, valorY);
+
+    } else if (sistemaDeEcuaciones == 3) { // Si el sistema es 3x3
+
+        // Calculos 3x3
+
+        let delta = multiplicarDiagonales(CoeficientesX, CoeficientesY, CoeficientesZ);
+
+        let deltaX = multiplicarDiagonales(Independientes, CoeficientesY, CoeficientesZ);
+ 
+        let deltaY = multiplicarDiagonales(CoeficientesX, Independientes, CoeficientesZ);
+
+        
+
+        let valorX = deltaX / delta;
+
+        let valorY = deltaY / delta;
+
+        let valorZ = deltaZ / delta;
+
+        mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
+
+    } else if( sistemaDeEcuaciones == 4){
+        
+        let delta = matrizDisminuida(CoeficientesX, CoeficientesY, CoeficientesZ, CoeficientesW);
+
+        let deltaX = multiplicarDiagonales(Independientes, CoeficientesY, CoeficientesZ);
+ 
+        let valorX = deltaX / delta;
+
+
+        mostrarResultados(delta, deltaX, deltaY, valorX, valorY, deltaZ, valorZ);
+    };
 };
 
 function generarMatriz(columna0, columna1, columna2) {
@@ -173,14 +182,25 @@ function generarMatriz(columna0, columna1, columna2) {
     ];
 }
 
-function multiplicarDiagonales(matriz) {
-    let resultado1 = matriz[0][0] * matriz[1][1] * matriz[2][2] +
-                     matriz[1][0] * matriz[2][1] * matriz[0][2] +
-                     matriz[2][0] * matriz[0][1] * matriz[1][2];
+function matrizDisminuida(columna0, columna1, columna2, columna3) {
+    let matriz = [[],[],[],[]];
+    for (let i = 0; i < matriz.length; i++) {
+        
+    }
+}
 
-    let resultado2 = matriz[0][2] * matriz[1][1] * matriz[2][0] +
-                     matriz[1][2] * matriz[2][1] * matriz[0][0] +
-                     matriz[2][2] * matriz[0][1] * matriz[1][0];
+function multiplicarDiagonales(columna0, columna1, columna2) {
+    const matriz = generarMatriz(columna0, columna1, columna2);
+
+    let resultado1 = 
+        matriz[0][0] * matriz[1][1] * matriz[2][2] +
+        matriz[1][0] * matriz[2][1] * matriz[0][2] +
+        matriz[2][0] * matriz[0][1] * matriz[1][2];
+
+    let resultado2 =
+        matriz[0][2] * matriz[1][1] * matriz[2][0] +
+        matriz[1][2] * matriz[2][1] * matriz[0][0] +
+        matriz[2][2] * matriz[0][1] * matriz[1][0];
 
     return resultado1 - resultado2;
 }
