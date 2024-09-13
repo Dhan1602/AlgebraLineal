@@ -37,14 +37,16 @@ input::-webkit-inner-spin-button {
 
 #ladoDerecho {
     width: 50%;
-    display: block;
+    display: flex;
+    justify-content: center;
 }
 
 #elegirSistema {
-    height: 10%;
-    margin: 10px;
-    display: block;
+    height: 3%;
+    padding: 10px;
+    display: inline-block;
     user-select: none;
+    max-width: 100%;
 }
 
 .elegido {
@@ -92,6 +94,9 @@ input::-webkit-inner-spin-button {
 .ecuacionTres{
     width: 550px;
 }
+.ecuacionCuatro{
+    width: 670px;
+}
 
 .ecuacion input {
     width: 80px;
@@ -134,7 +139,7 @@ input::-webkit-inner-spin-button {
 }
 
 #contenedorDeltas {
-    padding: 100px 0;
+    padding: 55px;
     height: 60%;
     display: flex;
     flex-direction: column;
@@ -144,7 +149,7 @@ input::-webkit-inner-spin-button {
 .Deltas {
     background-color: #ffffff91;
     padding: 15px;
-    margin: 15px;
+    margin: 10px;
     border-radius: 6px;
     width: 451px;
     -webkit-box-shadow: 10px 13px 6px -7px rgba(0, 0, 0, 0.14);
@@ -172,7 +177,7 @@ ul{
     text-align: center;
 }
 
-.tres{
+.tres, .cuatro{
     display: none;
 }
 
@@ -208,4 +213,9 @@ ul{
     ul{
         padding: 0;
     }
+    #contenedorDeltas {
+        padding: 20px 0 90px 0;
+        width: 100%;
+    }
+    
 }
